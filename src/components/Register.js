@@ -20,9 +20,10 @@ const Register = () => {
     e.preventDefault();
 
     // using localstorage for store users
-    history.push("/");
+    
     window.localStorage.setItem("users", JSON.stringify(formData));
     setformData({});
+    history.push("/login");
   };
 
   return (
