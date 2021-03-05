@@ -73,7 +73,7 @@ const Register = () => {
           Register
         </button>
         <Link
-          to="/"
+          to="/login"
           style={{
             color: "darkgoldenrod",
             textDecoration: "none",

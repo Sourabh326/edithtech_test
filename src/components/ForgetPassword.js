@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 
-const Login = () => {
+const ForgetPassword = () => {
   const history = useHistory();
-  let setUser;
+  
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    oldPassword: "",
+    newPassword: "",
   });
 
   const handleChange = (e) => {
@@ -15,58 +15,62 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleLogin = (e) => {
+  const handleReset = (e) => {
     e.preventDefault();
     // set localstorage data into local state
     const localStorageData = JSON.parse(window.localStorage.getItem("users"));
 
+    // set new password
+    const newPass = {username:localStorageData.username, email:localStorageData.email,password:formData.newPassword}
+    window.localStorage.setItem("users", JSON.stringify(newPass));
+
     if (
-      formData.username === localStorageData.username &&
-      formData.password === localStorageData.password
+      formData.oldPassword === localStorageData.password 
     ) {
-      history.push("/dashbord");
+      history.push("/login");
     } else {
-      alert("Username & Password is wrong !!");
+      alert("Password is not match !!");
     }
   };
 
   return (
     <>
-      <form className="login-form">
-        <h1>Login</h1>
+      <form className="login-form" onSubmit={handleReset}>
+        <h1>Reset Password</h1>
         <div className="form-input-material">
           <input
             type="text"
-            name="username"
+            name="oldPassword"
             id="username"
             placeholder=" "
             autoComplete="off"
-            value={formData["username"]}
+            value={formData["oldPassword"]}
             onChange={handleChange}
             required
             className="form-control-material"
           />
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Old Password</label>
         </div>
         <div className="form-input-material">
           <input
             type="password"
-            name="password"
+            name="newPassword"
             id="password"
             placeholder=" "
             autoComplete="off"
-            value={formData["password"]}
+            value={formData["newPassword"]}
             onChange={handleChange}
             required
             className="form-control-material"
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">New Password</label>
         </div>
-        <button type="submit" onClick={handleLogin} className="btn btn-ghost">
-          Login
+        <button type="submit"  className="btn btn-ghost">
+          Reset
         </button>
+        
         <Link
-          to="/"
+          to="/login"
           style={{
             color: "darkgoldenrod",
             textDecoration: "none",
@@ -74,23 +78,11 @@ const Login = () => {
             cursor: "pointer",
           }}
         >
-          Register for new user
-        </Link>
-        <Link
-          to="/forget_password"
-          style={{
-            color: "darkgoldenrod",
-            textDecoration: "none",
-            fontFamily: "sans-serif",
-            marginTop:"10px",
-            cursor: "pointer",
-          }}
-        >
-          Forget Password
+          Login
         </Link>
       </form>
     </>
   );
 };
 
-export default Login;
+export default ForgetPassword;
